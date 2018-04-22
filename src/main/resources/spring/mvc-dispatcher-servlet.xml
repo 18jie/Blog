@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+	
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<!-- 校验器没有器作用 -->
+	<annotation-driven validator="validator"/>
+	
+
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<resources mapping="/resources/**" location="/resources/" />
+
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/templates/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+	
+	<context:component-scan base-package="com.fengjie.controller" />
+	
+	<!-- 配置校验器 -->
+	<beans:bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+		<beans:property name="providerClass" value="org.hibernate.validator.HibernateValidator"></beans:property>
+		<beans:property name="validationMessageSource" ref="messageSource"></beans:property>
+	</beans:bean>
+	
+	<!-- 配置校验信息错误配置文件 -->
+	<beans:bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<!-- 资源文件名 -->
+		<beans:property name="basenames">
+			<beans:list>
+				<beans:value>classpath:CustomValidationMessages</beans:value>
+			</beans:list>
+		</beans:property>
+		<!-- 资源编码格式 -->
+		<beans:property name="fileEncodings" value="utf-8"></beans:property>
+		<!-- 对资源文件缓存时间,单位秒 -->
+		<beans:property name="cacheSeconds" value="120"></beans:property>
+	</beans:bean>
+	
+	<!-- 全局异常处理器 
+		只要实现了HandlerExceptionResolver接口的就是全局异常处理器,
+		当配置多个是,只有一个起作用.
+	-->
+	<!-- <beans:bean class="com.fengjie.exception.CustomExcetionResolver"></beans:bean> -->
+	
+	<!-- 配置拦截器 -->
+	<interceptors>
+		<interceptor>
+			<mapping path="/**"/>
+			<exclude-mapping path="/admin/login"/>
+			<exclude-mapping path="/admin/regist"/>
+			<beans:bean class="com.fengjie.interceptor.LoginInterceptor"></beans:bean>
+		</interceptor>
+	</interceptors>
+	
+</beans:beans>

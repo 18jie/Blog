@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.fengjie.dao.SiteDao">
+	<resultMap type="comments" id="myComments">
+		<id column="coid" property="coid" />
+		<result column="cid" property="cid" />
+		<result column="created" property="created" />
+		<result column="author" property="author" />
+		<result column="author_id" property="authorId" />
+		<result column="owner_id" property="ownerId" />
+		<result column="mail" property="mail" />
+		<result column="url" property="url" />
+		<result column="ip" property="ip" />
+		<result column="agent" property="agent" />
+		<result column="content" property="content" />
+		<result column="status" property="status" />
+		<result column="parent" property="parent" />
+	</resultMap>
+
+	<resultMap type="contents" id="myContents">
+		<id column="cid" property="cid" />
+		<result column="title" property="title" />
+		<result column="slug" property="slug" />
+		<result column="created" property="created" />
+		<result column="modified" property="modified" />
+		<result column="content" property="content" />
+		<result column="authorId" property="author_id" />
+		<result column="hits" property="hits" />
+		<result column="type" property="type" />
+		<result column="fmt_type" property="fmtType" />
+		<result column="thumb_img" property="thumbImg" />
+		<result column="tags" property="tags" />
+		<result column="categories" property="categories" />
+		<result column="status" property="status" />
+		<result column="comments_num" property="commentsNum" />
+		<result column="allow_comment" property="allowComment" />
+		<result column="allow_ping" property="allowPing" />
+		<result column="allow_feed" property="allowFeed" />
+	</resultMap>
+
+	<!-- 由用户id或文章编号查找所属的评论 -->
+	<select id="getComments" parameterType="commentsQueryVo"
+		resultMap="myComments">
+		SELECT * FROM comments
+		<where>
+			<!-- 再由其他条件的查询,在往上添加 -->
+			<if test="comments.ownerId != null and comments.cid == null">
+				AND owner_id = #{comments.ownerId}
+			</if>
+			<if test="comments.cid != null">
+				AND cid = #{comments.cid}
+			</if>
+		</where>
+		ORDER BY created
+		<if test="limit != null">
+			DESC LIMIT #{limit}
+		</if>
+	</select>
+
+	<!-- 由用户id或者文章id查找相应的文章 -->
+	<select id="getContents" parameterType="contentsQueryVo"
+		resultMap="myContents">
+		SELECT * FROM contents
+		<where>
+			<if test="contents.authorId != null and contents.cid==null">
+				AND author_id = #{contents.authorId}
+			</if>
+			<if test="contents.cid != null">
+				AND cid = #{contents.cid}
+			</if>
+				ORDER BY created DESC
+			<if test="limit != null">
+				LIMIT #{limit}
+			</if>
+			<if test="limit !=null and start != null">
+				LIMIT (#{start},#{limit})
+			</if>
+		</where>
+	</select>
+
+	<!-- 按照各种条件查询文章的个数 -->
+	<select id="getContentsCount" parameterType="contentsQueryVo"
+		resultType="int">
+		SELECT COUNT(*) FROM contents
+		<where>
+			<if test="contents.authorId != null">
+				AND author_id = #{contents.authorId}
+			</if>
+			<if test="contents.type != null">
+				AND type = #{contents.type}
+			</if>
+			<if test="contents.status != null">
+				AND status = #{contents.status}
+			</if>
+		</where>
+	</select>
+
+	<!-- 按照各种条件查询评论的个数 -->
+	<select id="getCommentsCount" parameterType="commentsQueryVo"
+		resultType="int">
+		SELECT COUNT(*) FROM comments
+		<where>
+			<if test="comments.cid != null">
+				AND cid = #{comments.cid}
+			</if>
+			<if test="comments.ownerId != null">
+				AND owner_id = #{comments.ownerId}
+			</if>
+		</where>
+	</select>
+
+	<!-- 按照各种条件查询mates的个数 -->
+	<select id="getMetasCount" parameterType="metasQueryVo"
+		resultType="int">
+		SELECT COUNT(*) FROM metas
+		<where>
+			<if test="metas != null">
+				<if test="metes.type != null">
+					AND type = #{metas.type}
+				</if>
+			</if>
+		</where>
+	</select>
+
+	<!-- 按照各种条件查询用户的附件数 -->
+	<select id="getAttachCount" parameterType="attachQueryVo"
+		resultType="int">
+		SELECT COUNT(*) FROM attach
+		<where>
+			<if test="attach.authorId != null">
+				AND author_id = #{attach.authorId}
+			</if>
+			<if test="attach.ftype != null">
+				AND ftype = #{attach.ftype}
+			</if>
+		</where>
+	</select>
+
+</mapper>

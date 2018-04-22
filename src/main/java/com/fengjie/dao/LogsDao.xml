@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.fengjie.dao.LogsDao">
+	<resultMap type="logs" id="myLogs">
+		<id column="id" property="id" />
+		<result column="action" property="action" />
+		<result column="data" property="data" />
+		<result column="author_id" property="authorId" />
+		<result column="ip" property="ip" />
+		<result column="created" property="created" />
+	</resultMap>
+	<insert id="insertLog" parameterType="logs">
+		<selectKey keyProperty="id" resultType="int" order="AFTER">
+			SELECT
+			LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO logs
+		(action,data,ip,author_id,created) VALUES
+		(#{action},#{data},#{ip},#{authorId},#{created})
+	</insert>
+	<!-- 默认按时间由最近记录到最远记录排序 -->
+	<select id="getLosgs" parameterType="logsQueryVo"
+		resultMap="myLogs">
+		SELECT * FROM logs
+		<where>
+			<if test="logs.authorId != null and logs.id == null">
+				AND author_id = #{logs.authorId}
+			</if>
+			<if test="logs.id != null">
+				AND id = #{logs.id}
+			</if>
+		</where>
+		ORDER BY created DESC
+		<if test="limit != null">
+			LIMIT #{limit}
+		</if>
+	</select>
+
+</mapper>

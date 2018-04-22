@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.fengjie.dao.UserDao">
+
+	<resultMap type="user" id="userMap">
+		<id column="uid" property="uid" />
+		<result column="username" property="username" />
+		<result column="password" property="password" />
+		<result column="email" property="email" />
+		<result column="home_url" property="homeUrl" />
+		<result column="screen_name" property="screenName" />
+		<result column="created" property="created" />
+		<result column="activated" property="activated" />
+		<result column="logged" property="logged" />
+		<result column="group_name" property="groupName" />
+	</resultMap>
+
+	<select id="findUserByUsername" parameterType="String"
+		resultMap="userMap">
+		SELECT * FROM user WHERE username=#{value}
+	</select>
+
+	<select id="findUserBySceenName" parameterType="String"
+		resultMap="userMap">
+		SELECT * FROM user WHERE screen_name = #{value}
+	</select>
+
+	<insert id="insertUser" parameterType="user">
+		INSERT INTO user
+		(username,password,email,screen_name,created) VALUES
+		(#{username},#{password},#{email},#{screenName},#{created})
+	</insert>
+
+	<update id="updateUserMessage" parameterType="user">
+		UPDATE user
+		<set>
+			<if test="screenName != null">
+				screen_name = #{screenName} ,
+			</if>
+			<if test="email != null">
+				email = #{email},
+			</if>
+			<if test="activated != null">
+				activated = #{activated},
+			</if>
+		</set>
+		WHERE uid = #{uid}
+	</update>
+
+	<update id="updateUserPassword" parameterType="user">
+		UPDATE user SET
+		password = #{password} WHERE uid = #{uid}
+	</update>
+
+</mapper>
