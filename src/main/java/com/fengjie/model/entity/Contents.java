@@ -6,23 +6,25 @@ import org.hibernate.validator.constraints.NotEmpty;
 import com.fengjie.init.BlogConst;
 
 import lombok.Data;
+import lombok.ToString;
 @Data
+@ToString
 public class Contents {
 	// post表主键
 	private Integer cid;
 	// 内容标题
 	@NotEmpty(message = "标题不能为空")
-	@Length(max = BlogConst.MAX_TITLE_COUNT, message = "文章标题最多可以输入%d个字符")
+	@Length(max = BlogConst.MAX_TITLE_COUNT, message = "文章标题最多可以输入200个字符")
 	private String title;
 	// 内容缩略名
 	private String slug;
 	// 内容生成时的GMT unix时间戳
-	private Integer created;
+	private Long created;
 	// 内容更改时的GMT unix时间戳
-	private Integer modified;
+	private Long modified;
 	// 内容文字
 	@NotEmpty(message = "内容不能为空")
-	@Length(max = BlogConst.MAX_TEXT_COUNT, message = "文章内容最多可以输入%d个字符")
+	@Length(max = BlogConst.MAX_TEXT_COUNT, message = "文章内容最多可以输入20000个字符")
 	private String content;
 	// 内容所属用户id
 	private Integer authorId;

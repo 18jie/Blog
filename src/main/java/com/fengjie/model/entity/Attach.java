@@ -19,6 +19,6 @@ public class Attach {
     //文件上传的用户
     private Integer authorId;
     //上传的时间
-    private Integer created;
+    private Long created;
 
 }

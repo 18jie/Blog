@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.fengjie.dao.AttachDao">
+
+	<resultMap type="attach" id="myAttach">
+		<id column="id" property="id"/>
+		<result column="fname" property="fname"/>
+		<result column="ftype" property="ftype"/>
+		<result column="fkey" property="fkey"/>
+		<result column="author_id" property="authorId"/>
+		<result column="created" property="created"/>
+	</resultMap>
+	
+	<select id="getAttachs" parameterType="attachQueryVo" resultMap="myAttach">
+		select * from attach
+		<where>
+			<if test="attach.id != null">
+				and id = #{attach.id}
+			</if>
+			<if test="attach.ftype != null">
+				and ftype = #{attach.ftype}
+			</if>
+			<if test="attach.authorId != null">
+				and author_id = #{attach.authorId}
+			</if>
+		</where>
+		order by created desc
+		<if test="limit != null and start == null">
+			limit #{limit}
+		</if>
+		<if test="limit != null and start != null">
+			limit #{start},#{limit}
+		</if>
+	</select>
+	
+	<insert id="insertAttach" parameterType="attach">
+		insert into attach (fname,ftype,fkey,author_id,created) values (#{fname},#{ftype},#{fkey},#{authorId},#{created})
+	</insert>
+	
+	<delete id="deleteAttachById" parameterType="int">
+		delete from attach where id = #{id}
+	</delete>
+	
+</mapper>

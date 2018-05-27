@@ -10,10 +10,6 @@
 		<result column="created" property="created" />
 	</resultMap>
 	<insert id="insertLog" parameterType="logs">
-		<selectKey keyProperty="id" resultType="int" order="AFTER">
-			SELECT
-			LAST_INSERT_ID()
-		</selectKey>
 		INSERT INTO logs
 		(action,data,ip,author_id,created) VALUES
 		(#{action},#{data},#{ip},#{authorId},#{created})

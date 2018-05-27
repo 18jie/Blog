@@ -50,7 +50,7 @@
 					<h4 class="panel-title">最新文章</h4>
 				</div>
 				<div class="panel-body">
-					<c:if test="${aritcles.size == 0 || article == null}">
+					<c:if test="${aritcles.size() == 0 || articles == null}">
 						<div class="alert alert-warning">你还没有发表文章.</div>
 					</c:if>
 					<ul class="list-group">

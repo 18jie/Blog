@@ -1,10 +1,123 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
 <mapper namespace="com.fengjie.dao.ArticleDao">
+	<!-- 读取的时候注意下面的配置 -->
+	<!-- <resultMap type="" id=""> <result column="title" property="title" jdbcType="varchar"/> 
+		</resultMap> -->
 
-	<!-- 查找metas(文章类型) -->
-	<select id="getMetas" parameterType="user" resultType="metas">
-		SELECT * FROM metas where uid = #{uid}
-	</select>
-	
+	<!-- 保存文章 --><!-- 一下两条插入和更新语句由文章和页面共用 -->
+	<insert id="saveContent" parameterType="contents">
+		<selectKey resultType="int" order="AFTER" keyColumn="cid"
+			keyProperty="cid">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO contents (title,
+		<if test="slug != null">
+			slug,
+		</if>
+		created,
+		content,
+		author_id,
+		type,
+		fmt_type,
+		<if test="thumbImg != null">
+			thumb_img,
+		</if>
+		<if test="tags != null">
+			tags,
+		</if>
+		<if test="categories != null">
+			categories,
+		</if>
+		status,
+		<if test="allowComment != null and allowPing == null and allowFeed == null">
+			allow_comment
+		</if>
+		<if test="allowComment != null and allowPing != null">
+			allow_comment,
+		</if>
+		<if test="allowPing != null">
+			allow_ping,
+		</if>
+		<if test="allowFeed != null">
+			allow_feed
+		</if>
+		)
+		VALUES (
+		#{title,jdbcType=LONGVARCHAR},
+		<if test="slug != null">
+			#{slug},
+		</if>
+		#{created},
+		#{content,jdbcType=LONGVARCHAR},
+		#{authorId},
+		#{type},
+		#{fmtType},
+		<if test="thumbImg != null">
+			#{thumbImg},
+		</if>
+		<if test="tags != null">
+			#{tags},
+		</if>
+		<if test="categories != null">
+			#{categories},
+		</if>
+		#{status},
+		<if test="allowComment != null and allowPing != null">
+			#{allowComment},
+		</if>
+		<if test="allowComment != null and allowPing == null and allowFeed == null">
+			#{allowComment}
+		</if>
+		<if test="allowPing != null">
+			#{allowPing},
+		</if>
+		<if test="allowFeed != null">
+			#{allowFeed}
+		</if>
+		);
+	</insert>
+
+	<delete id="deleteContent" parameterType="int">
+		delete from contents
+		where cid = #{value}
+	</delete>
+
+	<update id="updateContents" parameterType="contents">
+		update contents
+		<set>
+			title = #{title},
+			<if test="slug != null">
+				slug = #{slug},
+			</if>
+			modified = #{modified},
+			content = #{content},
+			type = #{type},
+			fmt_type = #{fmtType},
+			<if test="thumbImg != null">
+				thumb_img = #{thumbImg},
+			</if>
+			<if test="tags != null">
+				tags = #{tags},
+			</if>
+			<if test="categories != null">
+				categories = #{categories},
+			</if>
+			status = #{status},
+			<if test="allowComment != null and allowPing != null">
+				allow_comment = #{allowComment},
+			</if>
+			<if test="allowComment != null and allowPing == null and allowFeed == null">
+				allow_comment = #{allowComment}
+			</if>
+			<if test="allowPing != null">
+				allow_ping = #{allowPing},
+			</if>
+			<if test="allowFeed != null">
+				allow_feed = #{allowFeed}
+			</if>
+		</set>
+		where cid = #{cid}
+	</update>
+
 </mapper>

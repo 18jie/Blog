@@ -67,6 +67,16 @@ public class RestResponse<T> {
     	build.setPayload(payload);
     	return build;
     }
+    /**
+     * 返回提醒
+     * @param msg
+     * @return
+     */
+    public static <T> RestResponse<T> success(String msg){
+    	RestResponse<T> build = success();
+    	build.setMsg(msg);
+    	return build;
+    }
     
     /**
      * 失败
@@ -86,6 +96,18 @@ public class RestResponse<T> {
     public static <T> RestResponse<T> fail(T payload){
     	RestResponse<T> build = fail();
     	build.setPayload(payload);
+    	return build;
+    }
+    
+    public static<T> RestResponse<T> fail(T payload,String msg){
+    	RestResponse<T> fail = fail(payload);
+    	fail.setMsg(msg);
+    	return fail;
+    }
+    
+    public static <T> RestResponse<T> fail(String msg){
+    	RestResponse<T> build = fail();
+    	build.setMsg(msg);
     	return build;
     }
 

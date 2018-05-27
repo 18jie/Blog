@@ -96,13 +96,13 @@
         <form id="articleForm">
         	<!-- 下面填写的内容,下面这些input标签中,在通过这些input标签提交 -->
             <input type="hidden" name="categories" id="categories"/>
-            <input type="hidden" name="cid" value="${contents != null ? contents.id : ''}" id="cid"/>
+            <input type="hidden" name="cid" value="${contents != null ? contents.cid : ''}" id="cid"/>
             <input type="hidden" name="status" value="${contents.status != null ?contents.status : 'draft'}" id="status"/>
-            <input type="hidden" name="allowComment" value="${contents.allowComment != null?contents.allowComment : true}" id="allowComment"/>
-            <input type="hidden" name="allowPing" value="${contents.allowPing != null ?conetens.allowPing : true}" id="allowPing"/>
-            <input type="hidden" name="allowFeed" value="${contents.allowFeed != null ?contents.allowFeed : true}" id="allowFeed"/>
+            <input type="hidden" name="allowComment" value="${contents.allowComment != null ? contents.allowComment : true}" id="allowComment"/>
+            <input type="hidden" name="allowPing" value="${contents.allowPing != null ? contents.allowPing : true}" id="allowPing"/>
+            <input type="hidden" name="allowFeed" value="${contents.allowFeed != null ? contents.allowFeed : true}" id="allowFeed"/>
             <input type="hidden" name="content" id="content-editor"/>
-            <input type="hidden" name="fmtType" id="fmtType" value="${contents.fmtType != null ?contetns.fmtType : 'markdown'}"/>
+            <input type="hidden" name="fmtType" id="fmtType" value="${contents.fmtType != null ? contents.fmtType : 'markdown'}"/>
 			<!-- 文章标题 -->
             <div class="form-group col-md-6" style="padding: 0 10px 0 0;">
                 <input class="form-control" placeholder="请输入文章标题（必须）" name="title" required
@@ -121,13 +121,13 @@
 			<!-- 文章分类(类型),每一个类型就是一个metas -->
             <div class="form-group col-md-6">
                 <select id="multiple-sel" class="select2 form-control" multiple="multiple" data-placeholder="请选择分类...">
-                    <c:if test="${categories == null}">
+                    <c:if test="${categories == null || categories.size() == 0 || contents.categories == null}">
                     	<option value="默认分类" selected>默认分类</option>
                     </c:if>
 					<c:if test="${categories != null}">
 						<c:forEach items="${categories}" var="c">
 							<!-- 修改下面的表达(原始表达#if(null !=contents && exist_cat(c, contents.categories)) selected #end) -->
-							<option value="${c.name}"  <c:if test="${contetns != null && contents.categories != null}">selected</c:if> >
+							<option value="${c.name}"  <c:if test="${contents != null && contents.categories != null && contents.categories.contains(c.name)}">selected</c:if> >
                         ${c.name}
                     </option>	
 						</c:forEach>
@@ -151,12 +151,12 @@
 			<!-- 文本输入 -->
             <div id="md-container" class="form-group col-md-12">
             	<!-- #if(null != contents && contents.fmtType != 'html') hide #end -->
-                <textarea id="md-editor" class="<c:if test="${cotents != null && contents.fmtType != 'html'}">hiden</c:if>">${contents.content != null ?contents.content : ''}</textarea>
+                <textarea id="md-editor" class="<c:if test="${contents != null && contents.fmtType == 'markdown'}">hiden</c:if>">${contents.content != null ? contents.content : ''}</textarea>
             </div>
             <!-- 文本显示 -->
             <div id="html-container" class="form-group col-md-12">
                 <div class="summernote">
-                	<c:if test="${contents != null && contents.fmtType == 'html' }">
+                	<c:if test="${contents != null && contents.fmtType == 'html'}">
                 		${contents.content != null ? contents.content : ''}
                 	</c:if>
                 </div>
@@ -182,7 +182,7 @@
                 <label class="col-sm-4">允许订阅</label>
                 <div class="col-sm-8">
                     <div class="toggle toggle-success allow-${contents.allowFeed != null ?contents.allowFeed : true}"
-                         onclick="allow_feed(this);" on="${contents.allowFeed != null ?contents.allowFeed : true}"></div>
+                         onclick="allow_feed(this);" on="${contents.allowFeed != null ? contents.allowFeed : true}"></div>
                 </div>
             </div>
 

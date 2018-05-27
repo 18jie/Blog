@@ -7,5 +7,9 @@ import lombok.Data;
 public class AttachQueryVo {
 	
 	private Attach attach;
+	
+	private Integer start;
+	
+	private Integer limit;
 
 }

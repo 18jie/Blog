@@ -9,9 +9,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ContentsQueryVo {
 	
-	public ContentsQueryVo(User user) {
+	public ContentsQueryVo(User user,String type) {
 		Contents contents = new Contents();
 		contents.setAuthorId(user.getUid());
+		contents.setType(type);
+		this.contents = contents;
+	}
+	
+	public ContentsQueryVo(int cid) {
+		Contents contents = new Contents();
+		contents.setCid(cid);
 		this.contents = contents;
 	}
 	

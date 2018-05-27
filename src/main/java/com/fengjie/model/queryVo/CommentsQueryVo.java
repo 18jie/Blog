@@ -9,5 +9,7 @@ public class CommentsQueryVo {
 	private Comments comments;
 	
 	private Integer limit;
+	
+	private Integer start;
 
 }

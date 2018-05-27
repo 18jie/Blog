@@ -6,7 +6,6 @@ var refreshIntervalId = setInterval("autoSave()", 60 * 1000);
 Dropzone.autoDiscover = false;
 
 $(document).ready(function () {
-
     mditor = window.mditor = Mditor.fromTextarea(document.getElementById('md-editor'));
     // 富文本编辑器
     htmlEditor = $('.summernote').summernote({
@@ -188,7 +187,7 @@ function  autoSave() {
         $('#content-editor').val(content);
         $("#articleForm #categories").val($('#multiple-sel').val());
         var params = $("#articleForm").serialize();
-        var url = $('#articleForm #cid').val() != '' ? '/admin/article/modify' : '/admin/article/publish';
+        var url = $('#articleForm #cid').val() != '' ? '/Blog/admin/article/modify' : '/Blog/admin/article/publish';
         tale.post({
             url: url,
             data: params,
@@ -223,7 +222,7 @@ function subArticle(status) {
     $("#articleForm #status").val(status);
     $("#articleForm #categories").val($('#multiple-sel').val());
     var params = $("#articleForm").serialize();
-    var url = $('#articleForm #cid').val() != '' ? '/admin/article/modify' : '/admin/article/publish';
+    var url = $('#articleForm #cid').val() != '' ? '/Blog/admin/article/modify' : '/Blog/admin/article/publish';
     tale.post({
         url: url,
         data: params,
@@ -233,7 +232,7 @@ function subArticle(status) {
                     text: '文章保存成功',
                     then: function () {
                         setTimeout(function () {
-                            window.location.href = '/admin/article';
+                            window.location.href = '/Blog/admin/article';
                         }, 500);
                     }
                 });

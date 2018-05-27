@@ -41,4 +41,18 @@ public class Comments {
 	
 	//评论者客户端
 	private String agent;
+	
+	 // 评论内容
+    @NotEmpty(message = "请输入评论内容")
+    @Length(max = 2000, message = "请输入%d个字符以内的评论")
+    private String content;
+
+    // 评论类型
+    private String type;
+
+    // 评论状态
+    private String status;
+
+    // 父级评论
+    private Integer parent;
 }

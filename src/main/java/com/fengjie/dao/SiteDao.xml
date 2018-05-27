@@ -19,12 +19,11 @@
 
 	<resultMap type="contents" id="myContents">
 		<id column="cid" property="cid" />
-		<result column="title" property="title" />
+		<result column="title" property="title" jdbcType="LONGVARCHAR" />
 		<result column="slug" property="slug" />
 		<result column="created" property="created" />
 		<result column="modified" property="modified" />
-		<result column="content" property="content" />
-		<result column="authorId" property="author_id" />
+		<result column="author_id" property="authorId" />
 		<result column="hits" property="hits" />
 		<result column="type" property="type" />
 		<result column="fmt_type" property="fmtType" />
@@ -37,6 +36,11 @@
 		<result column="allow_ping" property="allowPing" />
 		<result column="allow_feed" property="allowFeed" />
 	</resultMap>
+	<resultMap type="contents" id="contentsResult"
+		extends="myContents">
+		<result column="content" property="content"
+			jdbcType="LONGVARCHAR" />
+	</resultMap>
 
 	<!-- 由用户id或文章编号查找所属的评论 -->
 	<select id="getComments" parameterType="commentsQueryVo"
@@ -44,11 +48,11 @@
 		SELECT * FROM comments
 		<where>
 			<!-- 再由其他条件的查询,在往上添加 -->
-			<if test="comments.ownerId != null and comments.cid == null">
+			<if test="comments.ownerId != null and comments.coid == null">
 				AND owner_id = #{comments.ownerId}
 			</if>
-			<if test="comments.cid != null">
-				AND cid = #{comments.cid}
+			<if test="comments.coid != null">
+				AND coid = #{comments.coid}
 			</if>
 		</where>
 		ORDER BY created
@@ -59,7 +63,7 @@
 
 	<!-- 由用户id或者文章id查找相应的文章 -->
 	<select id="getContents" parameterType="contentsQueryVo"
-		resultMap="myContents">
+		resultMap="contentsResult">
 		SELECT * FROM contents
 		<where>
 			<if test="contents.authorId != null and contents.cid==null">
@@ -68,15 +72,42 @@
 			<if test="contents.cid != null">
 				AND cid = #{contents.cid}
 			</if>
-				ORDER BY created DESC
-			<if test="limit != null">
+			<if test="contents.type != null">
+				AND type = #{contents.type}
+			</if>
+			ORDER BY created DESC
+			<if test="limit != null and start == null">
 				LIMIT #{limit}
 			</if>
 			<if test="limit !=null and start != null">
-				LIMIT (#{start},#{limit})
+				LIMIT #{start},#{limit}
 			</if>
 		</where>
 	</select>
+	<!-- 查找文章描述,共浏览文章列表的时候使用(可能会出错) -->
+	<select id="getArticleDescriptions"
+		parameterType="contentsQueryVo" resultMap="myContents">
+		SELECT cid,title,created,hits,categories,status FROM contents
+		<where>
+			<if test="contents.authorId != null">
+				author_id = #{contents.authorId}
+			</if>
+			ORDER BY created DESC
+			<if test="start != null and limit != null">
+				limit #{start},#{limit}
+			</if>
+			<if test="limit != null and start == null">
+				limit #{limit}
+			</if>
+		</where>
+	</select>
+
+	<select id="getPageDescriptions" parameterType="contentsQueryVo"
+		resultMap="myContents">
+		select cid,title,slug,created,status from contents where
+		author_id = #{contents.authorId} and type=#{contents.type} order by created desc
+	</select>
+
 
 	<!-- 按照各种条件查询文章的个数 -->
 	<select id="getContentsCount" parameterType="contentsQueryVo"

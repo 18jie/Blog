@@ -5,7 +5,7 @@
 <jsp:useBean id="dateValue" class="java.util.Date"></jsp:useBean>
 <c:set var="active" value="article" scope="request"></c:set>
 <c:set var="title" value="文章管理" scope="request"></c:set>
-<<c:import url="/WEB-INF/templates/admin/header.jsp"></c:import>
+<c:import url="/WEB-INF/templates/admin/header.jsp"></c:import>
 <div class="row">
 	<div class="col-sm-12">
 		<h4 class="page-title">文章管理</h4>
@@ -26,14 +26,14 @@
             <c:forEach items="${contents}" var="content">
             	<tr cid="${content.cid}">
                 <td>
-                    <a href="/admin/article/${content.cid}">${content.title}</a>
+                    <a href="/Blog/admin/article/${content.cid}">${content.title}</a>
                 </td>
                 <td>
                 	<jsp:setProperty property="time" name="dateValue" value="${content.created}"/>
                 	<fmt:formatDate value="${dateValue}" pattern="yyyy-MM-dd HH:mm:ss"/>
                 </td>
-                <td>${post.hits}</td>
-                <td>${post.categories}</td>
+                <td>${content.hits != null ? contents.hits : 0}</td>
+                <td>${content.categories}</td>
                 <td>
                     <c:if test="${content.status == 'publish' }">
                     	 <span class="label label-success">已发布</span>
@@ -45,14 +45,15 @@
                     
                 </td>
                 <td>
-                    <a href="/admin/article/${content.cid}"
+                    <a href="/Blog/admin/article/${content.cid}"
                        class="btn btn-primary btn-sm waves-effect waves-light m-b-5"><i
                             class="fa fa-edit"></i> <span>编辑</span></a>
                     <a href="javascript:void(0)" onclick="delPost(${content.cid});"
                        class="btn btn-danger btn-sm waves-effect waves-light m-b-5"><i
                             class="fa fa-trash-o"></i> <span>删除</span></a>
                     <c:if test="${content.status == 'publish'}">
-                    	<a class="btn btn-warning btn-sm waves-effect waves-light m-b-5" href="${permalink(post)}"
+                    	<!-- 暂时没有预览页面 $--{permalink(post)}-->
+                    	<a class="btn btn-warning btn-sm waves-effect waves-light m-b-5" href="#"
                        	target="_blank"><i
                             class="fa fa-rocket"></i> <span>预览</span></a>
                     </c:if>
@@ -61,7 +62,28 @@
             </c:forEach>
             </tbody>
 		</table>
-		#call pageAdminNav(articles)
+		
+	<ul class="pagination m-b-5 pull-right">
+	<c:if test="${page.present > 1}">
+		<li>
+        <a href="?page=${page.present - 1}" aria-label="Previous">
+            <i class="fa fa-angle-left"></i>&nbsp;上一页
+        </a>
+    </li>
+	</c:if>
+	<c:forEach begin="${page.begin}" end="${page.end}" var="num" step="1">
+		<li class="<c:if test="${page.present == num}">active</c:if>"><a href="?page=${num}">${num}</a>
+	</c:forEach>
+    <c:if test="${page.present < page.end}">
+    	<li>
+        <a href="?page=${page.present + 1}" aria-label="Next">
+            下一页&nbsp;<i class="fa fa-angle-right"></i>
+        </a>
+    </li>
+    </c:if>
+    <li><span>共${page.end}页</span></li>
+</ul>
+		
 	</div>
 </div>
 <c:import url="/WEB-INF/templates/admin/footer.jsp"></c:import>
@@ -73,7 +95,7 @@
             title:'确定删除该文章吗?',
             then: function () {
                tale.post({
-                   url : '/admin/article/delete',
+                   url : '/Blog/admin/article/delete',
                    data: {cid: cid},
                    success: function (result) {
                        if(result && result.success){

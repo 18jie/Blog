@@ -2,11 +2,17 @@ package com.fengjie.dao;
 
 import java.util.List;
 
+import com.fengjie.model.entity.Contents;
 import com.fengjie.model.entity.Metas;
-import com.fengjie.model.entity.User;
+import com.fengjie.model.queryVo.MetasQueryVo;
 
 public interface ArticleDao {
 	
-	public List<Metas> getMetas(User user) throws Exception;
+	
+	public int saveContent(Contents content) throws Exception;
+	
+	public void deleteContent(int cid) throws Exception;
+	
+	public void updateContents(Contents content) throws Exception;
 	
 }

@@ -65,7 +65,7 @@ public class IndexController {
 		map.addAttribute("has_sub", "");
 		map.addAttribute("logs", logs);
 		map.addAttribute("statistics", statistics);
-		map.addAttribute("contents", contents);
+		map.addAttribute("articles", contents);
 		map.addAttribute("comments", comments);
 
 		return "admin/index";

@@ -4,10 +4,12 @@ package com.fengjie.init;
 public class Pages {
 	//内容总数
 	private Integer total;
+	//开始页面
+	private Integer begin = 1;
 	//结束页面
 	private Integer end;
 	//当前页面
-	private Integer present = 1;
+	private Integer present;
 	//下一页面
 	private Integer next;
 	//上一页
@@ -18,7 +20,12 @@ public class Pages {
 	public Pages(int total) {
 		this.total = total;
 		int temp = total%limit;
-		end = temp == 0 ? total/limit : total/limit + 1;
+		int temp2 = total/limit;
+		if(temp == 0 && temp2 == 0) {
+			end = 1;
+		}else {
+			end = temp == 0 ? temp2 : temp2 + 1;
+		}
 	}
 	
 	private void setNext() {
@@ -53,6 +60,14 @@ public class Pages {
 	
 	public Integer getLimit() {
 		return this.limit;
+	}
+	
+	public Integer getBegin() {
+		return this.begin;
+	}
+	
+	public Integer getEnd() {
+		return this.end;
 	}
 
 }

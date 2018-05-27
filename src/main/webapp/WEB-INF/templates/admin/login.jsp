@@ -120,7 +120,7 @@
                 if (result && result.success) {
                     window.location.href = 'index';
                 } else {
-                    tale.alertError(result.payload || '登录失败');
+                    tale.alertError(result.msg || '登录失败');
                 }
             }
         });

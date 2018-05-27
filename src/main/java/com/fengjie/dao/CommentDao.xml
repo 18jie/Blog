@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.fengjie.dao.CommentDao">
+	
+	<delete id="deleteCommentByCoid" parameterType="int">
+		delete from comments where coid = #{value}
+	</delete>
+	
+	<insert id="addComments" parameterType="comments">
+		insert into comments (cid,created,author,author_id,ip,url,content,email,parent)
+		values
+		(#{cid},#{created},#{author},#{authorId},#{ip},#{url},#{content},#{email},#{parent})
+	</insert>
+	
+</mapper>

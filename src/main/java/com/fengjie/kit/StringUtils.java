@@ -1,5 +1,8 @@
 package com.fengjie.kit;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.UUID;
 
 public class StringUtils {
 	
@@ -30,5 +33,16 @@ public class StringUtils {
 		return false;
 	}
 	
+	public static String getUUID() {
+		return UUID.randomUUID().toString();
+	}
+	
+	public static String getDaliyFilePath(Long timeStamp) {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		String formatDate = format.format(new Date(timeStamp));
+		String year = formatDate.substring(0, 4);
+		String mouth = formatDate.substring(5,7);
+		return "/" + year + "/" + mouth;
+	}
 	
 }

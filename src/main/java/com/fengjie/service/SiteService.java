@@ -68,26 +68,13 @@ public class SiteService {
 			return statistics;
 		}
 		//统计用户发表文章的数量
-		ContentsQueryVo contentsQueryVo = new ContentsQueryVo();
-		Contents content = new Contents();
-		content.setType("post");
-		content.setStatus("publish");
-		contentsQueryVo.setContents(content);
-		Integer articles = siteDao.getContentsCount(contentsQueryVo);
+		Integer articles = getContentsCount(user);
 		//统计文章所需的页数
 		Integer pages = articles/10;
 		//统计用户所收到的所有评论
-		CommentsQueryVo commentsQueryVo = new CommentsQueryVo();
-		Comments comment = new Comments();
-		comment.setOwnerId(user.getUid());
-		commentsQueryVo.setComments(comment);
-		Integer comments = siteDao.getCommentsCount(commentsQueryVo);
+		Integer comments = getCommentsCount(user);
 		//统计用户所有的附件数
-		AttachQueryVo attachQueryVo = new AttachQueryVo();
-		Attach attach = new Attach();
-		attach.setAuthorId(user.getUid());
-		attachQueryVo.setAttach(attach);
-		Integer attachs = siteDao.getAttachCount(attachQueryVo);
+		Integer attachs = getAttachCount(user);
 		//下面两个东西,我还并不知道是什么
 		Integer tags = siteDao.getMetasCount(null);
 		Integer categories = tags;
@@ -105,6 +92,32 @@ public class SiteService {
 		return statistics;
 	}
 	
+	public Integer getAttachCount(User user) throws Exception {
+		AttachQueryVo attachQueryVo = new AttachQueryVo();
+		Attach attach = new Attach();
+		attach.setAuthorId(user.getUid());
+		attachQueryVo.setAttach(attach);
+		Integer attachs = siteDao.getAttachCount(attachQueryVo);
+		return attachs;
+	}
 	
+	public Integer getCommentsCount(User user) throws Exception {
+		CommentsQueryVo commentsQueryVo = new CommentsQueryVo();
+		Comments comment = new Comments();
+		comment.setOwnerId(user.getUid());
+		commentsQueryVo.setComments(comment);
+		Integer comments = siteDao.getCommentsCount(commentsQueryVo);
+		return comments;
+	}
+	
+	public Integer getContentsCount(User user) throws Exception{
+		ContentsQueryVo contentsQueryVo = new ContentsQueryVo();
+		Contents content = new Contents();
+		content.setType("post");
+		content.setStatus("publish");
+		contentsQueryVo.setContents(content);
+		Integer articles = siteDao.getContentsCount(contentsQueryVo);
+		return articles;
+	}
 	
 }
