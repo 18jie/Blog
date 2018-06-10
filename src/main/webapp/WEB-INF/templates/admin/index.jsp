@@ -56,7 +56,7 @@
 					<ul class="list-group">
 						<c:forEach items="${articles}" var="article">
 							<li class="list-group-item"><span
-								class="badge badge-primary" title="${article.commentsNum}条评论">${article.commentsNum}</span>
+								class="badge badge-primary" title="${article.hits == null ? 0 : article.hits}次浏览">${article.hits == null ? 0 : article.hits}</span>
 								<a target="_blank"
 								href="${pageContext.request.contextPath}/article/${article.cid}">${article.title}</a>
 							</li>

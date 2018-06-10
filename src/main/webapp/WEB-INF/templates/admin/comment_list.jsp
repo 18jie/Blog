@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <jsp:useBean id="dateValue" class="java.util.Date"></jsp:useBean>
 <c:set var="active" value="comments" scope="request"></c:set>
 <c:set var="title" value="评论管理" scope="request"></c:set>
@@ -28,8 +29,8 @@
 				<c:forEach items="${comments}" var="comment">
 					<tr cid="${comment.coid}">
 						<!-- 下面a标签的地址连接到用户主界面暂时没有$--{site_url('/article/')}${comment.cid} -->
-						<td><a href="#comments"
-							target="_blank">${article(comment.content)}</a></td>
+						<td><a href="/Blog/article/${comment.cid}"
+							target="_blank">${fn:substring(comment.content,0 ,20 )}</a></td>
 						<td>${comment.author}</td>
 						<jsp:setProperty property="time" name="dateValue" value="${comment.created}"/>
 						<td>
@@ -83,7 +84,7 @@
 <script type="text/javascript">
 
     var tale = new $.tale();
-    function reply(coid) {
+    function reply(cid) {
         swal({
             title: "回复评论",
             text: "请输入你要回复的内容:",
@@ -96,7 +97,7 @@
                 return new Promise(function (resolve, reject) {
                     tale.post({
                         url : '/Blog/admin/comments',
-                        data: {coid: coid, content: comment},
+                        data: {cid: cid, content: comment},
                         success: function (result) {
                             if(result && result.success){
                                 tale.alertOk('已回复');

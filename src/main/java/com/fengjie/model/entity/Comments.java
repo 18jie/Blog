@@ -33,7 +33,7 @@ public class Comments {
 	//评论所属内容作者id
 	private Integer ownerId;
 	
-	@URL
+
 	private String url;
 	
 	//评论者ip地址
@@ -44,7 +44,7 @@ public class Comments {
 	
 	 // 评论内容
     @NotEmpty(message = "请输入评论内容")
-    @Length(max = 2000, message = "请输入%d个字符以内的评论")
+    @Length(min = 5,max = 2000, message = "请输入5个字符以上,2000个以内的评论")
     private String content;
 
     // 评论类型

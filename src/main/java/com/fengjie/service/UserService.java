@@ -108,7 +108,6 @@ public class UserService {
 	
 	/**
 	 * 修改用户基本信息
-	 * @param userMessageParm
 	 * @param user
 	 * @return
 	 * @throws Exception

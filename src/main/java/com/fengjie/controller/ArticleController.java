@@ -130,12 +130,6 @@ public class ArticleController {
 				}
 			}
 			
-//			if(!MapCache.single().hget(String.valueOf(content.getCid()), "category").equals(content.getCategories())) {
-//				Metas category = categoryService.getMetasByNameAndType(MapCache.single().hget(String.valueOf(content.getCid()), "category"), "category", user.getUid(), null);
-//				category.setCount(category.getCount() - 1);
-//				categoryService.updateMetas(category);
-//				categoryService.changeMetasInContents(content.getCategories(), "category", user.getUid());
-//			}
 			MapCache.single().hset(String.valueOf(content.getCid()), "category", content.getCategories());
 		}
 		return build;
@@ -152,6 +146,11 @@ public class ArticleController {
 	public String newArticle(ModelMap map,HttpSession session) throws Exception {
 		User user = (User) session.getAttribute("user");
 		List<Metas> categories = articleService.getMetas("category",user.getUid());
+		for (int i = 0; i < categories.size() ; i++) {
+			if(categories.get(i).getName().equals("默认分类")){
+				categories.remove(i);
+			}
+		}
 		map.addAttribute("categories", categories);
 		
 		//下面代码为临时代码,后期可能修改(不给他网站的ip和端口)
@@ -168,8 +167,9 @@ public class ArticleController {
 	 */
 	@RequestMapping(value="/publish",method=RequestMethod.POST)
 	public @ResponseBody RestResponse<Integer> publishArticle(@Validated Contents content,BindingResult bindingResult,HttpSession session,HttpServletRequest request) throws Exception{
-		//插入数据库时,标题获取不到
 		List<ObjectError> allErrors = bindingResult.getAllErrors();
+		//测试使用
+		System.out.println(content.getCategories());
 		if(allErrors.size() > 0) {
 			return RestResponse.fail(allErrors.get(0).getDefaultMessage());
 		}

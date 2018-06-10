@@ -13,7 +13,7 @@
         http://www.springframework.org/schema/tx
         http://www.springframework.org/schema/tx/spring-tx.xsd">
 	<!-- 开启注解扫描 -->
-	<context:component-scan base-package="com.fengjie.service"></context:component-scan>	
+	<context:component-scan base-package="com.fengjie.service"/>
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<!-- 加载数据源文件 -->
@@ -21,22 +21,22 @@
 	
 	<!-- 配置数据源 -->
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
-		<property name="username" value="${jdbc.user}"></property>
-		<property name="password" value="${jdbc.password}"></property>
-		<property name="url" value="${jdbc.url}"></property>
-		<property name="initialSize" value="5"></property>
+		<property name="username" value="${jdbc.user}"/>
+		<property name="password" value="${jdbc.password}"/>
+		<property name="url" value="${jdbc.url}"/>
+		<property name="initialSize" value="5"/>
 	</bean>
 	
 	<!-- 配置sqlSessionFactoryBean -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="configLocation" value="classpath:mybatis/sqlMapConfig.xml"></property>
-		<property name="dataSource" ref="dataSource"></property>
+		<property name="configLocation" value="classpath:mybatis/sqlMapConfig.xml"/>
+		<property name="dataSource" ref="dataSource"/>
 	</bean>
 	
 	<!-- 配置sqlMapperFactoryBean -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.fengjie.dao"></property>
-		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+		<property name="basePackage" value="com.fengjie.dao"/>
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
 	</bean>
 	
 </beans>

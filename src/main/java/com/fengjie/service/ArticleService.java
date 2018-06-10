@@ -101,5 +101,27 @@ public class ArticleService {
 		}
 		return RestResponse.success(content.getCid());
 	}
+
+	public void addHits(int cid) throws Exception {
+		Integer hits = articleDao.getHits(cid);
+		if(hits == null) hits = 0;
+		hits++;
+		Contents contents = new Contents();
+		contents.setCid(cid);
+		contents.setHits(hits);
+		articleDao.updateContents(contents);
+	}
+
+	public List<Contents> getReleasedArticlesByPages(Pages pages) throws Exception {
+		ContentsQueryVo contentsQueryVo = new ContentsQueryVo();
+		Contents content = new Contents();
+		content.setStatus("publish");
+		content.setType("post");
+		contentsQueryVo.setLimit(pages.getLimit());
+		contentsQueryVo.setStart((pages.getPresent()-1)*pages.getLimit());
+		contentsQueryVo.setContents(content);
+		List<Contents> contents = siteDao.getContents(contentsQueryVo);
+		return contents;
+	}
 	
 }

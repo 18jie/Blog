@@ -86,14 +86,24 @@
 	<update id="updateContents" parameterType="contents">
 		update contents
 		<set>
-			title = #{title},
+			<if test="title != null">
+				title = #{title},
+			</if>
 			<if test="slug != null">
 				slug = #{slug},
 			</if>
-			modified = #{modified},
-			content = #{content},
-			type = #{type},
-			fmt_type = #{fmtType},
+			<if test="modified != null">
+				modified = #{modified},
+			</if>
+			<if test="content != null">
+				content = #{content},
+			</if>
+			<if test="type != null">
+				type = #{type},
+			</if>
+			<if test="fmtType != null">
+				fmt_type = #{fmtType},
+			</if>
 			<if test="thumbImg != null">
 				thumb_img = #{thumbImg},
 			</if>
@@ -103,7 +113,9 @@
 			<if test="categories != null">
 				categories = #{categories},
 			</if>
-			status = #{status},
+			<if test="status != null">
+				status = #{status},
+			</if>
 			<if test="allowComment != null and allowPing != null">
 				allow_comment = #{allowComment},
 			</if>
@@ -114,10 +126,17 @@
 				allow_ping = #{allowPing},
 			</if>
 			<if test="allowFeed != null">
-				allow_feed = #{allowFeed}
+				allow_feed = #{allowFeed},
+			</if>
+			<if test="hits != null">
+				hits = #{hits}
 			</if>
 		</set>
 		where cid = #{cid}
 	</update>
+
+	<select id="getHits" parameterType="int" resultType="Integer">
+		select hits from contents where cid = #{value};
+	</select>
 
 </mapper>

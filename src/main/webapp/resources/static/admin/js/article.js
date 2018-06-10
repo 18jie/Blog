@@ -221,6 +221,7 @@ function subArticle(status) {
     $('#content-editor').val(content);
     $("#articleForm #status").val(status);
     $("#articleForm #categories").val($('#multiple-sel').val());
+    //测试使用
     var params = $("#articleForm").serialize();
     var url = $('#articleForm #cid').val() != '' ? '/Blog/admin/article/modify' : '/Blog/admin/article/publish';
     tale.post({

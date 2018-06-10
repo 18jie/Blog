@@ -19,13 +19,7 @@ public class Pages {
 	
 	public Pages(int total) {
 		this.total = total;
-		int temp = total%limit;
-		int temp2 = total/limit;
-		if(temp == 0 && temp2 == 0) {
-			end = 1;
-		}else {
-			end = temp == 0 ? temp2 : temp2 + 1;
-		}
+		caculateEnd(total);
 	}
 	
 	private void setNext() {
@@ -45,6 +39,12 @@ public class Pages {
 	}
 	
 	public void setPresent(int present) {
+		if(present > limit){
+			begin = present-limit+1;
+		}
+		if(present < limit){
+			begin = 1;
+		}
 		this.present = present;
 		setNext();
 		setPrevious();
@@ -56,6 +56,7 @@ public class Pages {
 	
 	public void setLimit(int limit) {
 		this.limit = limit;
+		caculateEnd(total);
 	}
 	
 	public Integer getLimit() {
@@ -70,4 +71,14 @@ public class Pages {
 		return this.end;
 	}
 
+	public void caculateEnd(int total){
+		this.total = total;
+		int temp = total%limit;
+		int temp2 = total/limit;
+		if(temp == 0 && temp2 == 0) {
+			end = 1;
+		}else {
+			end = temp == 0 ? temp2 : temp2 + 1;
+		}
+	}
 }

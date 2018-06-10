@@ -11,41 +11,42 @@
         <div class="footer-container">
             <div class="meta-item meta-copyright">
                 <div class="meta-copyright-info">
-                    <a href="${site_url}" class="info-logo">
-                        <img src="/templates/themes/default/static/img/logo.png" alt="${site_title()}">
+                    <a href="/Blog" class="info-logo">
+                        <img src="/Blog/resources/static/templates/img/logo.png" alt="${options.writer}">
                     </a>
                     <div class="info-text">
-                        <p>一生有所追求.</p>
+                        <p>学的不仅是技术，更是梦想。</p>
                         <!-- 改成自己的地址 -->
-                        <p>Powered by <a href="https://github.com/otale/tale" target="_blank" rel="nofollow">Tale</a>
+                        <p>Powered by <a href="https://github.com/18jie/Blog" target="_blank" rel="nofollow">FengJie</a>
                         </p>
-                        <p>&copy; 2017 <a href="https://github.com/biezhi">biezhi</a></p>
+                        <p>&copy; 2017 <a href="https://github.com/18jie">18jie</a></p>
                     </div>
                 </div>
             </div>
 
             <div class="meta-item meta-posts">
                 <h3 class="meta-title">最新文章</h3>
-                <c:forEach items="${recentArticles}" var="article">
+                <!-- 这里还是要做单独的查询 -->
+                <c:forEach items="${recendArticles}" var="article" begin="0" end="7" step="1">
                 	<li>
-                    	<a href="${permalink()}">${title()}</a>
+                    	<a href="/Blog/article/${article.cid}">${article.title}</a>
                 	</li>
                 </c:forEach>
             </div>
 
             <div class="meta-item meta-comments">
                 <h3 class="meta-title">最新评论</h3>
-                <c:forEach items="recentComments" var="comment">
+                <c:forEach items="${recentComments}" var="comm">
                 	<li>
-                    <a href="${site_url('/article/')}${comm.cid}#comment-${comm.coid}">${comm.author}：${comm.content}</a>
+                    <a href="/Blog/article/${comm.cid}#comment-${comm.coid}">${comm.author}：${comm.content}</a>
                 </li>
                 </c:forEach>
             </div>
         </div>
     </div>
 </footer>
-
-#if(is_post)
+<!-- 在进入具体的文章内容中，打开下面的js -->
+<c:if test="${isPost}">
 <div id="directory-content" class="directory-content">
     <div id="directory"></div>
 </div>
@@ -140,12 +141,12 @@
     };
     postDirectoryBuild();
 </script>
-#end
-<script src="${theme_url('/static/js/headroom.min.js')}"></script>
+</c:if>
+<script src="/Blog/resources/static/templates/js/headroom.min.js"></script>
 <script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
-<script src="${theme_url('/static/js/instantclick.min.js')}"></script>
+<script src="/Blog/resources/static/templates/js/instantclick.min.js"></script>
 <script type="text/javascript">
-    #if(is_post)
+    <c:if test="${isPost}">
         var postDirectory = new Headroom(document.getElementById("directory-content"), {
             tolerance: 0,
             offset : 100,
@@ -155,7 +156,7 @@
                 unpinned: "unpinned"
             }
         });
-    #end
+    </c:if>
     var header = new Headroom(document.getElementById("header"), {
         tolerance: 10,
         offset : 80,
@@ -171,7 +172,7 @@
         if (key == 13) {
             var q = $(this).val();
             if (q && q != '') {
-                window.location.href = '/search/' + q;
+                window.location.href = '/Blog/search/' + q;
             }
         }
     });

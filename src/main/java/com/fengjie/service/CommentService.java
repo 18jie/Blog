@@ -2,6 +2,7 @@ package com.fengjie.service;
 
 import java.util.List;
 
+import com.fengjie.kit.DateKit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +20,11 @@ public class CommentService {
 	@Autowired
 	private CommentDao commentDao;
 	
-	public List<Comments> getComments(User user,Pages page) throws Exception {
+	public List<Comments> getComments(User user,Pages page,String type) throws Exception {
 		CommentsQueryVo commentsQueryVo = new CommentsQueryVo();
 		Comments comment = new Comments();
 		comment.setOwnerId(user.getUid());
+		comment.setType(type);
 		commentsQueryVo.setComments(comment);
 		commentsQueryVo.setLimit(page.getLimit());
 		commentsQueryVo.setStart((page.getPresent() - 1) * page.getLimit()); 
@@ -54,8 +56,31 @@ public class CommentService {
 	}
 	
 	public Integer saveComment(Comments comment) throws Exception {
+		comment.setCreated(DateKit.nowUnix());
 		Integer addComments = commentDao.addComments(comment);
 		return addComments;
+	}
+
+	public List<Comments> getCommentsByCid(Integer cid,String type) throws Exception {
+		CommentsQueryVo commentsQueryVo = new CommentsQueryVo();
+		Comments comment = new Comments();
+		comment.setCid(cid);
+		comment.setType(type);
+		commentsQueryVo.setComments(comment);
+		List<Comments> comments = siteDao.getComments(commentsQueryVo);
+		return comments;
+	}
+
+	public List<Comments> getCommentsByCidAndPage(Integer cid,String type,Pages page) throws Exception {
+		CommentsQueryVo commentsQueryVo = new CommentsQueryVo();
+		Comments comment = new Comments();
+		comment.setCid(cid);
+		comment.setType(type);
+		commentsQueryVo.setComments(comment);
+		commentsQueryVo.setLimit(page.getLimit());
+		commentsQueryVo.setStart((page.getPresent()-1)*page.getLimit());
+		List<Comments> comments = siteDao.getComments(commentsQueryVo);
+		return comments;
 	}
 	
 }

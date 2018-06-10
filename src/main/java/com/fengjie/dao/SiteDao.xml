@@ -12,7 +12,8 @@
 		<result column="url" property="url" />
 		<result column="ip" property="ip" />
 		<result column="agent" property="agent" />
-		<result column="content" property="content" />
+		<result column="content" property="content" jdbcType="LONGVARCHAR"/>
+		<result column="type" property="type"/>
 		<result column="status" property="status" />
 		<result column="parent" property="parent" />
 	</resultMap>
@@ -46,18 +47,29 @@
 	<select id="getComments" parameterType="commentsQueryVo"
 		resultMap="myComments">
 		SELECT * FROM comments
-		<where>
-			<!-- 再由其他条件的查询,在往上添加 -->
-			<if test="comments.ownerId != null and comments.coid == null">
-				AND owner_id = #{comments.ownerId}
-			</if>
-			<if test="comments.coid != null">
-				AND coid = #{comments.coid}
-			</if>
-		</where>
-		ORDER BY created
-		<if test="limit != null">
-			DESC LIMIT #{limit}
+		<if test="comments.ownerId != null || comments.coid != null || comments.cid != null || comments.type != null">
+			<where>
+				<!-- 再由其他条件的查询,在往上添加 -->
+				<if test="comments.ownerId != null and comments.coid == null">
+					AND owner_id = #{comments.ownerId}
+				</if>
+				<if test="comments.coid != null">
+					AND coid = #{comments.coid}
+				</if>
+				<if test="comments.cid != null">
+					and cid = #{comments.cid}
+				</if>
+				<if test="comments.type != null">
+					and type = #{comments.type}
+				</if>
+			</where>
+		</if>
+		ORDER BY created DESC
+		<if test="limit != null and start == null">
+			LIMIT #{limit}
+		</if>
+		<if test="limit != null and start != null">
+			limit #{start},#{limit}
 		</if>
 	</select>
 
@@ -65,24 +77,41 @@
 	<select id="getContents" parameterType="contentsQueryVo"
 		resultMap="contentsResult">
 		SELECT * FROM contents
-		<where>
-			<if test="contents.authorId != null and contents.cid==null">
-				AND author_id = #{contents.authorId}
-			</if>
-			<if test="contents.cid != null">
-				AND cid = #{contents.cid}
-			</if>
-			<if test="contents.type != null">
-				AND type = #{contents.type}
-			</if>
-			ORDER BY created DESC
-			<if test="limit != null and start == null">
-				LIMIT #{limit}
-			</if>
-			<if test="limit !=null and start != null">
-				LIMIT #{start},#{limit}
-			</if>
-		</where>
+		<if test="contents.authorId != null || contents.cid != null || contents.type != null || contents.status != null ||  contents.tags != null || contents.categories != null || contents.title != null || contents.slug != null">
+			<where>
+				<if test="contents.authorId != null and contents.cid==null">
+					AND author_id = #{contents.authorId}
+				</if>
+				<if test="contents.cid != null">
+					AND cid = #{contents.cid}
+				</if>
+				<if test="contents.type != null">
+					AND type = #{contents.type}
+				</if>
+				<if test="contents.status != null">
+					and status = #{contents.status}
+				</if>
+				<if test="contents.slug != null">
+					and slug = #{contents.slug}
+				</if>
+				<if test="contents.tags != null">
+					and tags like "%"#{contents.tags}"%"
+				</if>
+				<if test="contents.categories != null">
+					and categories like "%"#{contents.categories}"%"
+				</if>
+				<if test="contents.title != null">
+					and title like "%"#{contents.title}"%"
+				</if>
+			</where>
+		</if>
+		ORDER BY created DESC
+		<if test="limit != null and start == null">
+			LIMIT #{limit}
+		</if>
+		<if test="limit !=null and start != null">
+			LIMIT #{start},#{limit}
+		</if>
 	</select>
 	<!-- 查找文章描述,共浏览文章列表的时候使用(可能会出错) -->
 	<select id="getArticleDescriptions"

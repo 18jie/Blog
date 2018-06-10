@@ -11,8 +11,10 @@ public class ContentsQueryVo {
 	
 	public ContentsQueryVo(User user,String type) {
 		Contents contents = new Contents();
-		contents.setAuthorId(user.getUid());
-		contents.setType(type);
+		if(user != null){
+			contents.setAuthorId(user.getUid());
+			contents.setType(type);
+		}
 		this.contents = contents;
 	}
 	

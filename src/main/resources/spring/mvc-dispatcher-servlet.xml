@@ -37,7 +37,7 @@
 		<!-- 资源文件名 -->
 		<beans:property name="basenames">
 			<beans:list>
-				<beans:value>classpath:CustomValidationMessages</beans:value>
+				<beans:value>CustomValidationMessages</beans:value>
 			</beans:list>
 		</beans:property>
 		<!-- 资源编码格式 -->
@@ -61,7 +61,7 @@
 	<!-- 配置拦截器 -->
 	<interceptors>
 		<interceptor>
-			<mapping path="/**"/>
+			<mapping path="/admin/*"/>
 			<exclude-mapping path="/admin/login"/>
 			<exclude-mapping path="/admin/regist"/>
 			<beans:bean class="com.fengjie.interceptor.LoginInterceptor"></beans:bean>

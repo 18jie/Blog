@@ -129,7 +129,7 @@
 							<!-- 修改下面的表达(原始表达#if(null !=contents && exist_cat(c, contents.categories)) selected #end) -->
 							<option value="${c.name}"  <c:if test="${contents != null && contents.categories != null && contents.categories.contains(c.name)}">selected</c:if> >
                         ${c.name}
-                    </option>	
+                    </option>
 						</c:forEach>
 					</c:if>
                 </select>

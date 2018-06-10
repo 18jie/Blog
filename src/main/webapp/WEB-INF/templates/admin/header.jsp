@@ -6,7 +6,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>${title == null ?'博客后台':title }</title>
+<%--暂时性的修改 --%>
+<title>${title == null ?'博客后台' :title}</title>
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <meta content="biezhi" name="author" />
@@ -28,8 +29,8 @@
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
-            <script src="/static/admin/plugins/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="/static/admin/plugins/respond.js/1.3.0/respond.min.js"></script>
+            <script src="/Blog/resources/static/admin/plugins/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="/Blog/resources/static/admin/plugins/respond.js/1.3.0/respond.min.js"></script>
 
     <![endif]-->
 </head>

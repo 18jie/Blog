@@ -40,7 +40,7 @@ public class RestResponse<T> {
      * 构造一个RestResponse
      * @return 一个新的RespResponse对象
      */
-    public static <T> RestResponse<T> build() {
+    private static <T> RestResponse<T> build() {
     	RestResponse<T> response = new RestResponse<>();
     	response.setTimestamp(DateKit.nowUnix());
     	return new RestResponse<>();
@@ -76,6 +76,13 @@ public class RestResponse<T> {
     	RestResponse<T> build = success();
     	build.setMsg(msg);
     	return build;
+    }
+
+    public static <T> RestResponse<T> success(String msg,T payload){
+        RestResponse<T> build = success();
+        build.setMsg(msg);
+        build.setPayload(payload);
+        return build;
     }
     
     /**

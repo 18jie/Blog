@@ -19,11 +19,11 @@ public interface SiteDao {
 	public List<Contents> getContents(ContentsQueryVo contentsQueryVo) throws Exception;
 	
 	public Integer getContentsCount(ContentsQueryVo contentsQueryVo) throws Exception;
-	
+
 	public List<Contents> getArticleDescriptions(ContentsQueryVo contentsQueryVo) throws Exception;
 	
 	public List<Contents> getPageDescriptions(ContentsQueryVo contentsQueryVo) throws Exception;
-	
+
 	//有关于attach的sql
 	public Integer getAttachCount(AttachQueryVo attachQueryVo) throws Exception;
 	

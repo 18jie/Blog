@@ -6,10 +6,10 @@
 		delete from comments where coid = #{value}
 	</delete>
 	
-	<insert id="addComments" parameterType="comments">
-		insert into comments (cid,created,author,author_id,ip,url,content,email,parent)
+	<insert id="addComments" parameterType="comments" useGeneratedKeys="true" keyProperty="coid" keyColumn="coid">
+		insert into comments (cid,created,author,ip,url,content,email)
 		values
-		(#{cid},#{created},#{author},#{authorId},#{ip},#{url},#{content},#{email},#{parent})
+		(#{cid},#{created},#{author},#{ip},#{url},#{content},#{email})
 	</insert>
 	
 </mapper>

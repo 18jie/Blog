@@ -60,7 +60,6 @@ public class PageController {
 	 * 修改已存在的页面
 	 * @param cid
 	 * @param map
-	 * @param session
 	 * @return
 	 * @throws Exception 
 	 */

@@ -46,7 +46,7 @@ public class CommentController {
 		Pages pages = new Pages(siteService.getCommentsCount(user));
 		pages.setPresent(page);
 		pages.setLimit(limit);
-		List<Comments> comments = commentService.getComments(user, pages);
+		List<Comments> comments = commentService.getComments(user, pages,"comment");
 		map.addAttribute("comments", comments);
 		map.addAttribute("pages", pages);
 		return "admin/comment_list";
@@ -76,6 +76,7 @@ public class CommentController {
 		comments.setContent(content);
 		comments.setEamil(user.getEmail());
 		comments.setParent(coid);
+		comments.setType("reply");
 		
 		Integer saveComment = commentService.saveComment(comments);
 		if(saveComment == 1) {

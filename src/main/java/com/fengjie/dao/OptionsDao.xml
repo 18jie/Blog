@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.fengjie.dao.OptionsDao">
+    <select id="getOptionsByUid" parameterType="int" resultType="options">
+        select * from options where uid = #{value};
+    </select>
+
+    <insert id="insertOptions" parameterType="options">
+        insert into options (uid,tname,writer,logo,weibo,zhihu,github,twitter)
+        values
+        (#{uid},#{tname},#{writer},#{logo},#{weibo},#{zhihu},#{github},#{twitter});
+    </insert>
+
+    <update id="updateOptions" parameterType="options">
+        update options
+        <set>
+            <if test="tname != null">
+                tname=#{tname},
+            </if>
+            <if test="writer != null">
+                writer=#{writer},
+            </if>
+            <if test="logo != null">
+                logo=#{logo},
+            </if>
+            <if test="weibo != null">
+                weibo=#{weibo},
+            </if>
+            <if test="zhihu != null">
+                zhihu=#{zhihu},
+            </if>
+            <if test="github != null">
+                github=#{github},
+            </if>
+            <if test="twitter != null">
+                twitter=#{twitter}
+            </if>
+        </set>
+        where uid=#{uid};
+    </update>
+</mapper>

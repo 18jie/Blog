@@ -32,7 +32,7 @@
                 	<jsp:setProperty property="time" name="dateValue" value="${content.created}"/>
                 	<fmt:formatDate value="${dateValue}" pattern="yyyy-MM-dd HH:mm:ss"/>
                 </td>
-                <td>${content.hits != null ? contents.hits : 0}</td>
+                <td>${content.hits != null ? content.hits : 0}</td>
                 <td>${content.categories}</td>
                 <td>
                     <c:if test="${content.status == 'publish' }">
@@ -53,7 +53,7 @@
                             class="fa fa-trash-o"></i> <span>删除</span></a>
                     <c:if test="${content.status == 'publish'}">
                     	<!-- 暂时没有预览页面 $--{permalink(post)}-->
-                    	<a class="btn btn-warning btn-sm waves-effect waves-light m-b-5" href="#"
+                    	<a class="btn btn-warning btn-sm waves-effect waves-light m-b-5" href="/Blog/article/${content.cid}"
                        	target="_blank"><i
                             class="fa fa-rocket"></i> <span>预览</span></a>
                     </c:if>
